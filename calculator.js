@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const port = 3500;
 
-
 function add(num1, num2){
     return num1 + num2;}
 function multiply(num1, num2) { 
@@ -13,18 +12,23 @@ function divide(num1, num2) {
 function subtract(num1, num2) {
    return num1 - num2;}
 
-// These are higher order functions that take in other functions as input.
-const calculator = function(num1, num2, operator){
-   
+const calculator = function(num1, num2, operator){   
     return operator(num1, num2);
    // operator is a function that performs the required computation.;
 };
+
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+//Routes
 app.get('/', (req, res)=>{
     res.sendFile(`${__dirname}/index.html`);
 
 });
+app.get('/bmicalculator', (req, res)=>{
+    res.sendFile(`${__dirname}/bmicalculator.html`);
+
+});
+
 
 app.post("/", (req, res)=>{    
     let num1 = parseInt(req.body.num1 ,10);
@@ -52,10 +56,19 @@ app.post("/", (req, res)=>{
         default:
             console.log("You did not enter a correct operator");
             break;
+    }  
+
+    let weight = Number(req.body.weight);
+    let height = Number(req.body.height); 
+    console.log(weight);  
+    console.log(height); 
+
+    let answerbmi = weight / (height * height);
+    if (answer === undefined){
+        res.send(`Your BMI is : ${answerbmi}`);
     }
     
-    
-    res.send(`The result is ${answer}`);
+    else  res.send(`The result is ${answer}`);
 });
 
 app.listen(port, ()=>{
