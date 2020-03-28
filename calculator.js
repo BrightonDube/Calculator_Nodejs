@@ -57,18 +57,21 @@ app.post("/", (req, res)=>{
             console.log("You did not enter a correct operator");
             break;
     }  
+    
+    res.send(`The result is ${answer}`);
+});
 
+app.post('/bmicalculator', (req, res)=> {
     let weight = Number(req.body.weight);
     let height = Number(req.body.height); 
     console.log(weight);  
     console.log(height); 
 
-    let answerbmi = weight / (height * height);
-    if (answer === undefined){
-        res.send(`Your BMI is : ${answerbmi}`);
-    }
-    
-    else  res.send(`The result is ${answer}`);
+    let answer = weight / (height * height);
+    if (answer >25) {
+        res.send(`Your BMI is : ${answer}. You are overweight!`);
+    }else
+        res.send(`Your BMI is : ${answer}`);
 });
 
 app.listen(port, ()=>{
